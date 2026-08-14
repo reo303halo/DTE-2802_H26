@@ -13,8 +13,8 @@ It is important to keep up with announcements to stay updated on online meetings
 
 ### Course Requirements
 There are 2 mandatory assignments that must be passed:
-- **Assignment 1: XXX** (deadline: XX.XX.26)
-- **Assignment 2: XXX** (deadline: XX.XX.26)
+- **Assignment 1: API** (deadline: 30.09.26)
+- **Assignment 2: MVC** (deadline: 31.10.26)
 
 **Grading Scale:** Pass - Fail
 
