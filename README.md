@@ -1,4 +1,4 @@
-# DTE-2802-V26: Web Applications 2
+# DTE-2802-26H: Web Applications 2
 
 This is the github repository for the course this semester 2026.
 Example code, lecture code and additional code will all be uploaded here.
