@@ -1,0 +1,5 @@
+$kind: http-request
+name: Delete Game
+url: http://localhost:5095/Game/2
+method: DELETE
+order: 4362615273031659

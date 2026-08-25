@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get All Games
+url: http://localhost:5095/Game
+method: GET
+order: 1787310990667

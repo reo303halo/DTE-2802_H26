@@ -1,0 +1,30 @@
+@GameInventoryApi_HostAddress = http://localhost:5095
+
+GET {{GameInventoryApi_HostAddress}}/Game
+Accept: application/json
+
+###
+
+### Get a single game
+GET {{GameInventoryApi_HostAddress}}/Game/1
+Accept: application/json
+
+###
+
+### Add a new game
+POST {{GameInventoryApi_HostAddress}}/Game
+Content-Type: application/json
+
+{
+  "title": "The Witcher 3",
+  "genre": "RPG",
+  "hoursPlayed": 65,
+  "installed": true
+}
+
+###
+
+### Delete a game
+DELETE {{GameInventoryApi_HostAddress}}/Game/3
+
+###

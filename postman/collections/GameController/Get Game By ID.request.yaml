@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Game By ID
+url: http://localhost:5095/Game/1
+method: GET
+order: 4054634683158380

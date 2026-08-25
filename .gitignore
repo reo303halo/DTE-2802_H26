@@ -36,3 +36,12 @@ Desktop.ini
 .DS_Store
 .idea/
 PreCode/
+
+# Postman
+.postman/
+/postman/documents
+/postman/environments
+/postman/flows
+/postman/globals
+/postman/mocks
+/postman/specs

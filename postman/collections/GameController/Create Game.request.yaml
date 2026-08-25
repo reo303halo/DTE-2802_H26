@@ -1,0 +1,14 @@
+$kind: http-request
+name: Create Game
+url: http://localhost:5095/Game
+method: POST
+body:
+  type: json
+  content: |-
+    {
+      "title": "The Witcher 3",
+      "genre": "RPG",
+      "hoursPlayed": 65,
+      "installed": true
+    }
+order: 4327356401494098
