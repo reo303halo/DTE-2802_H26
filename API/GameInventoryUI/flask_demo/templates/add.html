@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Add a Game{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('index') }}" class="btn btn-link ps-0">&larr; Back to all games</a>
+
+<h1 class="h4 mb-3">Add a game</h1>
+
+<form method="POST" style="max-width: 400px;">
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="genre" class="form-label">Genre</label>
+        <input type="text" class="form-control" id="genre" name="genre" required>
+    </div>
+
+    <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" id="installed" name="installed">
+        <label class="form-check-label" for="installed">Installed</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add game</button>
+</form>
+{% endblock %}

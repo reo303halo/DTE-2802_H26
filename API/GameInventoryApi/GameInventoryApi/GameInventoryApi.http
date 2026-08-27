@@ -1,5 +1,6 @@
 @GameInventoryApi_HostAddress = http://localhost:5095
 
+### Get all games
 GET {{GameInventoryApi_HostAddress}}/Game
 Accept: application/json
 
@@ -12,6 +13,7 @@ Accept: application/json
 ###
 
 ### Add a new game
+# Note: HoursPlayed is ignored by AddGame — new games always start at 0 hours.
 POST {{GameInventoryApi_HostAddress}}/Game
 Content-Type: application/json
 
@@ -24,7 +26,33 @@ Content-Type: application/json
 
 ###
 
+### Update a game
+PUT {{GameInventoryApi_HostAddress}}/Game/1
+Content-Type: application/json
+
+{
+  "title": "Elden Ring",
+  "genre": "Action RPG",
+  "hoursPlayed": 130,
+  "installed": true
+}
+
+###
+
+### Update a game with invalid data (triggers automatic 400 validation)
+PUT {{GameInventoryApi_HostAddress}}/Game/1
+Content-Type: application/json
+
+{
+  "title": "",
+  "genre": "Action RPG",
+  "hoursPlayed": -5,
+  "installed": true
+}
+
+###
+
 ### Delete a game
-DELETE {{GameInventoryApi_HostAddress}}/Game/3
+DELETE {{GameInventoryApi_HostAddress}}/Game/2
 
 ###

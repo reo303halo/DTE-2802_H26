@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Game Inventory — jQuery/AJAX Demo</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+    body {
+        font-family: system-ui, sans-serif;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+    }
+    h1 { font-size: 1.4rem; }
+    section { margin-bottom: 32px; }
+    input {
+        padding: 6px 8px;
+        margin: 4px 4px 4px 0;
+    }
+    button {
+        padding: 6px 12px;
+        cursor: pointer;
+    }
+    ul { padding-left: 0; list-style: none; }
+    li {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 10px 14px;
+        margin-bottom: 8px;
+    }
+    .genre { color: #666; font-size: 0.9rem; }
+    #status { color: #b00; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+
+<h1>🎮 Game Inventory — jQuery/AJAX Demo</h1>
+<p id="status"></p>
+
+<!-- API base URL -->
+<script>
+    const API_BASE = "http://localhost:5095/Game";
+</script>
+
+<section>
+    <h2>All games</h2>
+    <button id="loadGamesBtn">Load games</button>
+    <ul id="gamesList"></ul>
+</section>
+
+<section>
+    <h2>Get a single game</h2>
+    <input type="number" id="gameIdInput" placeholder="Game ID" min="1">
+    <button id="loadGameBtn">Fetch</button>
+    <div id="singleGameResult"></div>
+</section>
+
+<section>
+    <h2>Add a game</h2>
+    <input type="text" id="titleInput" placeholder="Title">
+    <input type="text" id="genreInput" placeholder="Genre">
+    <label><input type="checkbox" id="installedInput"> Installed</label>
+    <br>
+    <button id="addGameBtn">Add game</button>
+</section>
+
+<script>
+$(function () {
+
+    function showStatus(message) {
+        $("#status").text(message);
+        setTimeout(() => $("#status").text(""), 4000);
+    }
+
+    // GET /Game — load all games
+    $("#loadGamesBtn").on("click", function () {
+        $.ajax({
+            url: API_BASE,
+            method: "GET",
+            dataType: "json"
+        })
+        .done(function (games) {
+            $("#gamesList").empty();
+            games.forEach(function (game) {
+                $("#gamesList").append(
+                    `<li><strong>${game.title}</strong> (#${game.id})
+                     <div class="genre">${game.genre} — ${game.hoursPlayed}h — ${game.installed ? "Installed" : "Not installed"}</div>
+                     </li>`
+                );
+            });
+        })
+        .fail(function () {
+            showStatus("Could not load games. Is the API running? Is CORS enabled?");
+        });
+    });
+
+    // GET /Game/{id} — load a single game
+    $("#loadGameBtn").on("click", function () {
+        const id = $("#gameIdInput").val();
+        if (!id) {
+            showStatus("Enter a game ID first.");
+            return;
+        }
+
+        $.ajax({
+            url: `${API_BASE}/${id}`,
+            method: "GET",
+            dataType: "json"
+        })
+        .done(function (game) {
+            $("#singleGameResult").html(
+                `<p><strong>${game.title}</strong> — ${game.genre} — ${game.hoursPlayed}h</p>`
+            );
+        })
+        .fail(function (xhr) {
+            if (xhr.status === 404) {
+                $("#singleGameResult").html(`<p>No game found with ID ${id}.</p>`);
+            } else {
+                showStatus("Something went wrong fetching that game.");
+            }
+        });
+    });
+
+    // POST /Game — add a new game
+    $("#addGameBtn").on("click", function () {
+        const newGame = {
+            title: $("#titleInput").val(),
+            genre: $("#genreInput").val(),
+            hoursPlayed: 0,
+            installed: $("#installedInput").is(":checked")
+        };
+
+        if (!newGame.title || !newGame.genre) {
+            showStatus("Title and Genre are required.");
+            return;
+        }
+
+        $.ajax({
+            url: API_BASE,
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(newGame)
+        })
+        .done(function () {
+            showStatus("Game added!");
+            $("#titleInput, #genreInput").val("");
+            $("#installedInput").prop("checked", false);
+            $("#loadGamesBtn").trigger("click"); // refresh the list
+        })
+        .fail(function (xhr) {
+            showStatus("Failed to add game (status " + xhr.status + ").");
+        });
+    });
+
+});
+</script>
+
+</body>
+</html>

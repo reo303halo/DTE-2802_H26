@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ game.title }}{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('index') }}" class="btn btn-link ps-0">&larr; Back to all games</a>
+
+<div class="card mt-2" style="max-width: 400px;">
+    <div class="card-body">
+        <h1 class="h4 card-title">{{ game.title }}</h1>
+        <h2 class="h6 card-subtitle mb-3 text-muted">{{ game.genre }}</h2>
+        <p class="card-text mb-1">Hours played: {{ game.hoursPlayed }}</p>
+        <p class="card-text">
+            {% if game.installed %}
+                <span class="badge bg-success">Installed</span>
+            {% else %}
+                <span class="badge bg-secondary">Not installed</span>
+            {% endif %}
+        </p>
+    </div>
+</div>
+{% endblock %}

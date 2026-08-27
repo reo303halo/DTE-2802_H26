@@ -2,9 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GameInventoryApi.Models;
 
-public class Game
+// DTO - Data Transfer Object
+
+public class GameDto
 {
-    public int Id { get; set; }
     [Required, StringLength(100, MinimumLength = 3)]
     public string Title { get; set; } = "";
     [Required]

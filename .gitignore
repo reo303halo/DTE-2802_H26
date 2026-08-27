@@ -45,3 +45,9 @@ PreCode/
 /postman/globals
 /postman/mocks
 /postman/specs
+
+# Environment files
+.env
+.venv
+.narnia
+.area51

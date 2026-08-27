@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}All Games{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">All Games</h1>
+    <a href="{{ url_for('add_game') }}" class="btn btn-primary">+ Add a game</a>
+</div>
+
+<div class="list-group">
+{% for game in games %}
+    <a href="{{ url_for('game_detail', game_id=game.id) }}"
+       class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <div>
+            <strong>{{ game.title }}</strong>
+            <div class="text-muted small">{{ game.genre }} — {{ game.hoursPlayed }}h</div>
+        </div>
+        {% if game.installed %}
+            <span class="badge bg-success">Installed</span>
+        {% else %}
+            <span class="badge bg-secondary">Not installed</span>
+        {% endif %}
+    </a>
+{% else %}
+    <p class="text-muted">No games found.</p>
+{% endfor %}
+</div>
+{% endblock %}
