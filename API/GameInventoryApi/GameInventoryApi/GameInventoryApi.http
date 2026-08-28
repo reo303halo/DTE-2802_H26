@@ -19,9 +19,8 @@ Content-Type: application/json
 
 {
   "title": "The Witcher 3",
-  "genre": "RPG",
-  "hoursPlayed": 65,
-  "installed": true
+  "genre": "Action",
+  "installed": false
 }
 
 ###

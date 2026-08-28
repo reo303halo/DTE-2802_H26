@@ -1,77 +1,40 @@
 using GameInventoryApi.Models;
+using GameInventoryApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameInventoryApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GameController : ControllerBase
+public class GameController(IGameService gameService) : ControllerBase
 {
-    private static readonly List<Game> Games =
-    [
-        new()
-        {
-            Id = 1,
-            Title = "Elden Ring",
-            Genre = "Action RPG",
-            HoursPlayed = 120,
-            Installed = true
-        },
-        new()
-        {
-            Id = 2,
-            Title = "Stardew Valley",
-            Genre = "Simulation",
-            HoursPlayed = 45,
-            Installed = false
-        },
-        new()
-        {
-            Id = 3,
-            Title = "Cyberpunk 2077",
-            Genre = "RPG",
-            HoursPlayed = 80,
-            Installed = true
-        }
-    ];
-
     // GET: /Game
     [HttpGet]
-    public ActionResult<IEnumerable<Game>> GetGames()
+    public async Task<ActionResult<IEnumerable<Game>>> GetGames()
     {
-        return Ok(Games); // Status Code: 200
+        var games = await gameService.GetGames();
+        
+        return Ok(games); // Status Code: 200
     }
 
     // GET: /Game/1
     [HttpGet("{id:int}")]
-    public ActionResult<Game> GetGame(int id)
+    public async Task<ActionResult<Game>> GetGame(int id)
     {
-        var game = Games.FirstOrDefault(g => g.Id == id);
-        
+        var game = await gameService.GetGame(id);
+
         if (game is null)
-        {
-            return NotFound(); // Status Code: 404
-        }
-        
+            return NotFound();
+
         return Ok(game);
     }
     
     // POST: /Game
     [HttpPost]
-    public ActionResult<Game> AddGame(GameDto gameDto)
+    public async Task<ActionResult<Game>> AddGame(GameDto gameDto)
     {
-        var game = new Game
-        {
-            Id = Games.Count == 0 ? 1 : Games.Max(g => g.Id) + 1,
-            Title = gameDto.Title,
-            Genre = gameDto.Genre,
-            Installed = gameDto.Installed
-        };
-        // We assume "AddGame" is when you buy a new game and it to your library.
-        // In this case it makes sense that HoursPlayed starts at 0.
+        var game = await gameService.AddGame(gameDto);
         
-        Games.Add(game);
-
         return CreatedAtAction(
             nameof(GetGame),
             new { id = game.Id },
@@ -81,39 +44,26 @@ public class GameController : ControllerBase
     
     // PUT: /Game/1
     [HttpPut("{id:int}")]
-    public IActionResult UpdateGame(int id, GameDto gameDto)
+    public async Task<IActionResult> UpdateGame(int id, GameDto gameDto)
     {
-        // if (!ModelState.IsValid) - Now automatic, so this line is not necessary anymore.
-        
-        var game = Games.FirstOrDefault(g => g.Id == id);
-        
-        if (game is null)
-            return NotFound(); // For a one-liner, this is a cleaner option (compared to GetGame and DeleteGame - {}).
+        var updated = await gameService.UpdateGame(id, gameDto);
 
-        game.Title = gameDto.Title;
-        game.Genre = gameDto.Genre;
-        game.HoursPlayed = gameDto.HoursPlayed;
-        game.Installed = gameDto.Installed;
-        
-        return NoContent(); // Ok() if you want to add a message like: Ok("Game was successfully updated")
+        if (!updated)
+            return NotFound($"Game with {id} not found.");
+
+        return Ok("Game successfully updated!");
     }
-    
-    // In our scenario we might also or separately want a PUT that only increment hours for each hour played.
     
     // DELETE: /Game/1
     [HttpDelete("{id:int}")]
-    public IActionResult DeleteGame(int id)
+    public async Task<IActionResult> DeleteGame(int id)
     {
-        var game = Games.FirstOrDefault(g => g.Id == id);
-        
-        if (game is null)
-        {
-            return NotFound();
-        }
+        var deleted = await gameService.DeleteGame(id);
 
-        Games.Remove(game);
+        if (!deleted)
+            return NotFound($"Game with {id} not found.");
         
-        return Ok("Game successfully deleted."); // return NoContent();
+        return Ok("Game successfully deleted.");
     }
 }
 

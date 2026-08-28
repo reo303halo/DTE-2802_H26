@@ -1,3 +1,7 @@
+using GameInventoryApi.Data;
+using GameInventoryApi.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -15,6 +19,11 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader();
     });
 });
+
+builder.Services.AddDbContext<GameDbContext>(options =>
+    options.UseSqlite("Data Source=games.db"));
+
+builder.Services.AddScoped<IGameService, GameService>();
 
 var app = builder.Build();
 
