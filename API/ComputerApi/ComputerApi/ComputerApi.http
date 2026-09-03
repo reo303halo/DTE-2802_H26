@@ -1,0 +1,6 @@
+@ComputerApi_HostAddress = http://localhost:5171
+
+GET {{ComputerApi_HostAddress}}/Computer/
+Accept: application/json
+
+###
