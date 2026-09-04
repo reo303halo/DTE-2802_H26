@@ -1,11 +1,12 @@
 using ComputerApi.Models.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ComputerApi.Data;
 
 
 
-public class ComputerDbContext(DbContextOptions<ComputerDbContext> options) : DbContext(options)
+public class ComputerDbContext(DbContextOptions<ComputerDbContext> options) : IdentityDbContext(options)
 {
     public DbSet<Computer> Computers => Set<Computer>();
     public DbSet<Brand> Brands => Set<Brand>();
