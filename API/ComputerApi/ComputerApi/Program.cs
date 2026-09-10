@@ -1,4 +1,5 @@
 using ComputerApi.Data;
+using ComputerApi.Models.Entities;
 using ComputerApi.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ builder.Services.AddDbContext<ComputerDbContext>(options =>
 // Register UserManager, SignInManager, RoleManager,
 // Bearer token auth, and all endpoint services
 builder.Services
-    .AddIdentityApiEndpoints<IdentityUser>()
+    .AddIdentityApiEndpoints<CustomUser>()
     .AddEntityFrameworkStores<ComputerDbContext>();
 
 // 2. Authorization
@@ -45,7 +46,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // 4. Map all 10 Identity endpoints: /register, /login, /refresh, etc
-app.MapIdentityApi<IdentityUser>();
+app.MapIdentityApi<CustomUser>();
 
 app.UseCors("Demo");
 

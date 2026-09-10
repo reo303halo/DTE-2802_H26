@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace ComputerApi.Models;
+namespace ComputerApi.Models.Entities;
 
 public class CustomUser : IdentityUser
 {

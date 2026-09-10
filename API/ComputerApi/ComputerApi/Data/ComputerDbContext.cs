@@ -6,7 +6,7 @@ namespace ComputerApi.Data;
 
 
 
-public class ComputerDbContext(DbContextOptions<ComputerDbContext> options) : IdentityDbContext(options)
+public class ComputerDbContext(DbContextOptions<ComputerDbContext> options) : IdentityDbContext<CustomUser>(options)
 {
     public DbSet<Computer> Computers => Set<Computer>();
     public DbSet<Brand> Brands => Set<Brand>();
