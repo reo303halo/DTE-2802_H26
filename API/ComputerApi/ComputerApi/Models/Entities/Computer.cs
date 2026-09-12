@@ -15,4 +15,8 @@ public class Computer
     
     public int OsId { get; set; }
     public Os Os { get; set; } = null!;
+    
+    // Owner
+    public string OwnerId { get; set; } = "";
+    public CustomUser Owner { get; set; } = null!;
 }

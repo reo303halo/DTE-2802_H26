@@ -34,4 +34,58 @@ public class ComputerService(ComputerDbContext context) : IComputerService
             })
             .ToListAsync();
     }
+
+    public async Task<ComputerDto> CreateAsync(CreateComputerDto dto, string ownerId)
+    {
+        var computer = new Computer
+        {
+            Model = dto.Model,
+            Processor = dto.Processor,
+            RamGb = dto.RamGb,
+            StorageGb = dto.StorageGb,
+            BrandId = dto.BrandId,
+            OsId = dto.OsId,
+            OwnerId = ownerId
+        };
+
+        context.Computers.Add(computer);
+        await context.SaveChangesAsync();
+
+        // Reload with navigation properties for the DTO
+        await context.Entry(computer).Reference(c => c.Brand).LoadAsync();
+        await context.Entry(computer).Reference(c => c.Os).LoadAsync();
+
+        return new ComputerDto
+        {
+            Id = computer.Id,
+            Model = computer.Model,
+            Processor = computer.Processor,
+            RamGb = computer.RamGb,
+            StorageGb = computer.StorageGb,
+            Brand = new BrandDto
+            {
+                Id = computer.Brand.Id,
+                Name = computer.Brand.Name,
+                Country = computer.Brand.Country
+            },
+            Os = new OsDto
+            {
+                Id = computer.Os.Id,
+                Name = computer.Os.Name,
+                Version = computer.Os.Version
+            }
+        };
+    }
+
+    public async Task<bool> DeleteAsync(int id, string userId)
+    {
+        var computer = await context.Computers.FindAsync(id);
+
+        if (computer == null || computer.OwnerId != userId)
+            return false;
+
+        context.Computers.Remove(computer);
+        await context.SaveChangesAsync();
+        return true;
+    }
 }
