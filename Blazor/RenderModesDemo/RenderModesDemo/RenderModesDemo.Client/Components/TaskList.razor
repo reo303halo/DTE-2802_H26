@@ -1,0 +1,82 @@
+<h3>TaskList</h3>
+
+<div class="mb-3">
+    <p>
+        <small>
+            Data source: <strong>@_source</strong> |
+            Interactive since: <strong>@(_interactiveSince?.ToString("HH:mm:ss.fff") ?? "never")</strong>
+        </small>
+    </p>
+
+    @if (Items is null)
+    {
+        <p><em>Loading tasks...</em></p>
+    }
+    else
+    {
+        <input @bind="_newTitle" @bind:event="oninput" placeholder="New task..." />
+        <button @onclick="Add" disabled="@string.IsNullOrWhiteSpace(_newTitle)">Add</button>
+
+        <ul class="list-unstyled mt-2">
+            @foreach (var item in Items)
+            {
+                <li>
+                    <label>
+                        <input type="checkbox" @bind="item.Done" />
+                        <span style="@(item.Done ? "text-decoration:line-through" : null)">@item.Title</span>
+                    </label>
+                    <button @onclick="() => Items.Remove(item)">✕</button>
+                </li>
+            }
+        </ul>
+
+        <p>@Items.Count(i => i.Done) of @Items.Count done</p>
+    }
+</div>
+
+@code {
+    [PersistentState]
+    public List<TodoItem>? Items { get; set; }
+
+    private string? _newTitle;
+    private string _source = "";
+    private DateTime? _interactiveSince;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Items is null)
+        {
+            await Task.Delay(500); // pretend this is a slow database call
+            Items =
+            [
+                new TodoItem { Title = "Explain static SSR" },
+                new TodoItem { Title = "Explain interactive server" },
+                new TodoItem { Title = "Explain WebAssembly and Auto" }
+            ];
+            _source = "seeded (fresh load)";
+        }
+        else
+        {
+            _source = "restored from persisted prerender state";
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!firstRender) return;
+        _interactiveSince = DateTime.Now;
+        StateHasChanged();
+    }
+
+    private void Add()
+    {
+        Items!.Add(new TodoItem { Title = _newTitle! });
+        _newTitle = null;
+    }
+
+    public class TodoItem
+    {
+        public string Title { get; set; } = "";
+        public bool Done { get; set; }
+    }
+}

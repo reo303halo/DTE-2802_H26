@@ -1,0 +1,13 @@
+<h3>RenderInfo</h3>
+
+<div class="alert alert-info">
+    <div><strong>RenderInfo.Name:</strong> @RendererInfo.Name</div>
+    <div><strong>IsInteractive:</strong> @RendererInfo.IsInteractive</div>
+    <div><strong>Executing on:</strong> @(OperatingSystem.IsBrowser() ? "the browser (WebAssembly)" : "the server")</div>
+    <div><strong>Component instance:</strong> @_instanceId</div>
+    <div><strong>Rendered at:</strong> @DateTime.Now.ToString("HH:mm:ss.fff")</div>
+</div>
+
+@code {
+    private readonly string _instanceId = Guid.NewGuid().ToString("N")[..6];
+}
