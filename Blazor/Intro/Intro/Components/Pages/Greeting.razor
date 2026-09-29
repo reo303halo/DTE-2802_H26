@@ -1,6 +1,18 @@
-@page "/Greeting"
-<h3>Greeting</h3>
+@page "/greeting"
+@rendermode InteractiveServer
+
+<PageTitle>Greeting</PageTitle>
+
+<h1>Hello!</h1>
+
+<input @bind="_name" placeholder="Enter your name..." />
+
+@if (!string.IsNullOrWhiteSpace(_name))
+{
+    <p>Hello @_name!</p>
+}
 
 @code {
-    
+    private string _name = "";
+
 }
