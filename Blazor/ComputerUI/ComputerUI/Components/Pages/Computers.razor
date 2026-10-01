@@ -1,0 +1,50 @@
+@page "/computers"
+@using ComputerUI.Models
+@using ComputerUI.Services
+@inject ComputerApiClient HttpClient
+
+<PageTitle>Computers</PageTitle>
+<h1>Computers</h1>
+
+@if (_computers is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Model</th>
+            <th>Brand</th>
+            <th>Processor</th>
+            <th>RAM</th>
+            <th>Storage</th>
+            <th>OS</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var c in _computers)
+        {
+            <tr>
+                <td>@c.Model</td>
+                <td>@c.Brand.Name (@c.Brand.Country)</td>
+                <td>@c.Processor</td>
+                <td>@c.RamGb GB</td>
+                <td>@c.StorageGb GB</td>
+                <td>@c.Os.Name @c.Os.Version</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private List<Computer>? _computers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _computers = await HttpClient.GetComputersAsync();
+    }
+}
