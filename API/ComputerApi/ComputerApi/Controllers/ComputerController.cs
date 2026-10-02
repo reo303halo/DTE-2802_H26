@@ -10,7 +10,7 @@ namespace ComputerApi.Controllers;
 [Route("[controller]")]
 public class ComputerController(IComputerService computerService) : ControllerBase
 {
-    //[Authorize]
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<List<ComputerDto>>> GetAll()
     {

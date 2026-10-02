@@ -1,4 +1,7 @@
 ﻿@inherits LayoutComponentBase
+@using ComputerUI.Services
+@inject ComputerApiClient Api
+@inject NavigationManager Nav
 
 <div class="page">
     <div class="sidebar">
@@ -7,9 +10,16 @@
 
     <main>
         <div class="top-row px-4">
+            @if (Api.IsLoggedIn)
+            {
+                <a href="#" @onclick="Logout" @onclick:preventDefault>Logout</a>
+            }
+            else
+            {
+                <a href="/login">Login</a>
+            }
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
         </div>
-
         <article class="content px-4">
             @Body
         </article>
@@ -21,3 +31,11 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+    private void Logout()
+    {
+        Api.Logout();
+        Nav.NavigateTo("/login");
+    }
+}

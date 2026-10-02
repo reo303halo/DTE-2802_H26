@@ -1,7 +1,8 @@
 @page "/computers"
 @using ComputerUI.Models
 @using ComputerUI.Services
-@inject ComputerApiClient HttpClient
+@inject ComputerApiClient Api
+@inject NavigationManager Nav
 
 <PageTitle>Computers</PageTitle>
 <h1>Computers</h1>
@@ -45,6 +46,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _computers = await HttpClient.GetComputersAsync();
+        if (!Api.IsLoggedIn) { Nav.NavigateTo("/login"); return; }
+        
+        _computers = await Api.GetComputersAsync();
+        if (_computers is null) Nav.NavigateTo("/login"); // token was rejected
     }
 }

@@ -1,0 +1,53 @@
+@page "/login"
+@using ComputerUI.Services
+@inject ComputerApiClient Api
+@inject NavigationManager Nav
+
+<PageTitle>Login</PageTitle>
+<h1>Login</h1>
+
+<EditForm Model="_model" OnValidSubmit="DoLogin">
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <InputText class="form-control" @bind-Value="_model.Email" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <div class="input-group">
+            <InputText class="form-control"
+                       type="@(_showPassword ? "text" : "password")"
+                       @bind-Value="_model.Password" />
+            <button class="btn btn-outline-secondary"
+                    type="button"
+                    @onclick="() => _showPassword = !_showPassword">
+                @(_showPassword ? "Hide" : "Show")
+            </button>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Log in</button>
+</EditForm>
+
+@if (_failed)
+{
+    <p class="text-danger mt-2">Invalid username or password.</p>
+}
+
+<h3>Login</h3>
+
+@code {
+    private readonly LoginModel _model = new();
+    private bool _showPassword;
+    private bool _failed;
+
+    private async Task DoLogin()
+    {
+        _failed = !await Api.LoginAsync(_model.Email, _model.Password);
+        if (!_failed) Nav.NavigateTo("/computers");
+    }
+
+    private class LoginModel
+    {
+        public string Email { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+}

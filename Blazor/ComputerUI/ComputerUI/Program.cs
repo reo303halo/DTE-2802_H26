@@ -7,10 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddHttpClient<ComputerApiClient>(client =>
+builder.Services.AddHttpClient<ComputerApiClient>("api",client =>
 {
     client.BaseAddress = new Uri("http://localhost:5171");
 });
+builder.Services.AddScoped(sp =>
+    new ComputerApiClient(sp.GetRequiredService<IHttpClientFactory>().CreateClient("api")));
 
 var app = builder.Build();
 
