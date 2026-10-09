@@ -7,12 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddHttpClient<ComputerApiClient>("api",client =>
-{
-    client.BaseAddress = new Uri("http://localhost:5171");
-});
-builder.Services.AddScoped(sp =>
-    new ComputerApiClient(sp.GetRequiredService<IHttpClientFactory>().CreateClient("api")));
+// HttpClient
+builder.Services.AddScoped<TokenStore>();
+builder.Services.AddHttpClient<IComputerApiClient, ComputerApiClient>(client =>
+    client.BaseAddress = new Uri("http://localhost:5171"));
 
 var app = builder.Build();
 

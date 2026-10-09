@@ -6,11 +6,9 @@ namespace ComputerUI.Services;
 
 public record LoginResponse(string AccessToken);
 
-public class ComputerApiClient(HttpClient http)
+public class ComputerApiClient(HttpClient http, TokenStore tokens): IComputerApiClient
 {
-    private string? _token;
-
-    public bool IsLoggedIn => _token != null;
+    public bool IsLoggedIn => tokens.Token is not null;
 
     public async Task<bool> LoginAsync(string email, string password)
     {
@@ -18,23 +16,23 @@ public class ComputerApiClient(HttpClient http)
         if (!res.IsSuccessStatusCode) return false;
         
         var body = await res.Content.ReadFromJsonAsync<LoginResponse>();
-        _token = body?.AccessToken;
-        return _token != null;
+        tokens.Token = body?.AccessToken;
+        return IsLoggedIn;
     }
     
-    public void Logout() => _token = null;
+    public void Logout() => tokens.Token = null;
 
     public Task<List<Computer>?> GetComputersAsync() => GetAsync<List<Computer>>("Computer");
 
     private async Task<T?> GetAsync<T>(string url)
     {
         using var req = new HttpRequestMessage(HttpMethod.Get, url);
-        req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+        req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokens.Token);
 
         using var res = await http.SendAsync(req);
         if (res.StatusCode == HttpStatusCode.Unauthorized)
         {
-            _token = null; // expired or invalid
+            tokens.Token = null; // expired or invalid
             return default;
         }
 

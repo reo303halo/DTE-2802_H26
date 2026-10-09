@@ -1,6 +1,6 @@
 @page "/login"
 @using ComputerUI.Services
-@inject ComputerApiClient Api
+@inject IComputerApiClient Api
 @inject NavigationManager Nav
 
 <PageTitle>Login</PageTitle>
@@ -31,8 +31,6 @@
 {
     <p class="text-danger mt-2">Invalid username or password.</p>
 }
-
-<h3>Login</h3>
 
 @code {
     private readonly LoginModel _model = new();
