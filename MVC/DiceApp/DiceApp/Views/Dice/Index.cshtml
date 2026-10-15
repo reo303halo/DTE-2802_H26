@@ -1,0 +1,47 @@
+@model DiceViewModel
+@{
+    ViewData["Title"] = "Dice Roller";
+}
+
+<h1>Dice Roller</h1>
+
+<form asp-action="Index" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <table class="table w-auto">
+        <thead>
+        <tr><th>Die</th><th>How many?</th></tr>
+        </thead>
+        <tbody>
+        @for (var i = 0; i < Model.Dice.Count; i++)
+        {
+            <tr>
+                <td class="align-middle">
+                    d@(Model.Dice[i].Sides)
+                    <input type="hidden" asp-for="Dice[i].Sides" />
+                </td>
+                <td>
+                    <input asp-for="Dice[i].Count" class="form-control" min="0" max="20" style="width:6rem" />
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary">Roll!</button>
+</form>
+
+@if (Model.Results.Any())
+{
+    <h2 class="mt-4">Total: @Model.Total</h2>
+
+    <ul class="list-unstyled d-flex flex-wrap gap-2">
+        @foreach (var r in Model.Results)
+        {
+            <li class="border rounded p-2 text-center" style="min-width:4rem">
+                <div class="fs-3">@r.Value</div>
+                <small class="text-muted">d@(r.Sides)</small>
+            </li>
+        }
+    </ul>
+}
