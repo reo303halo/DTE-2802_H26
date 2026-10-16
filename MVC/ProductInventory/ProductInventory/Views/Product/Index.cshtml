@@ -1,0 +1,42 @@
+@model IEnumerable<ProductInventory.Models.Entities.Product>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Product</h1>
+    <table class="table table-striped table-bordered">
+        <thead style="background-color: #343a40; color: #fff;">
+        <tr>
+            <td>Name</td>
+            <td>Description</td>
+            <td>Price</td>
+            <td>Category Name</td>
+            <td>Manufacturer Name</td>
+            <td>Action</td>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var p in Model)
+        {
+            var description = p.Description ?? "";
+            var price = p.Price;
+            <tr>
+                <td>@p.Name</td>
+                <td>@description</td>
+                <td>@price</td>
+                <td>@p.Category.Name</td>
+                <td>@p.Manufacturer.Name</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Product", new { id = p.Id })" class="btn btn-primary">Edit</a>
+                    <a href="@Url.Action("Delete", "Product", new { id = p.Id })"
+                       onclick="return confirm('Are you sure you want to delete this product?')"
+                       class="btn btn-secondary">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+    <a href="@Url.Action("Create", "Product")" class="btn btn-primary">Create</a>
+</div>
