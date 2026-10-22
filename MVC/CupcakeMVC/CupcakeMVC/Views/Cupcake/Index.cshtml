@@ -1,0 +1,32 @@
+@model IEnumerable<CupcakeMVC.Models.Entities.Cupcake>
+
+@{
+    ViewData["Title"] = "Cupcake";
+}
+
+<h1 class="display-4">Cupcake</h1>
+<div class="container">
+    <div class="row">
+        @foreach (var cupcake in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="images/cupcake_placeholder.jpeg" class="card-img-top" alt="Cupcake Image">
+                    <div class="card-body">
+                        <h5 class="card-title">@cupcake.Name</h5>
+                        <p class="card-text">Category: @cupcake.Category?.Name</p>
+                        <p class="card-text overflow-text">@cupcake.Description</p>
+                        <p class="card-text">Size: @cupcake.Size?.Name</p>
+                        <p class="card-text">Owner: @cupcake.Owner?.Email</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    @{
+        if (User.Identity is { IsAuthenticated: true })
+        {
+            <a href="@Url.Action("Create", "Cupcake")" class="btn btn-primary">Create</a>
+        }
+    }
+</div>

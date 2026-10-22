@@ -1,0 +1,32 @@
+@model CupcakeMVC.Models.ViewModels.CupcakeEditViewModel
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <h1>Create</h1>
+            <hr/>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>
+                <label asp-for="Name">Name:</label>
+                <input asp-for="Name" class="form-control"/>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Description">Description:</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <br/>
+            <div>
+                <select asp-for="SizeId"
+                        asp-items="@(new SelectList(Model.Sizes, "Id", "Name"))">
+                </select>
+                <select asp-for="CategoryId"
+                        asp-items="@(new SelectList(Model.Categories, "Id", "Name"))">
+                </select>
+            </div>
+            <br/>
+            <button type="submit" class="btn btn-primary">Add Cupcake</button>
+        </form>
+    </div>
+</div>
