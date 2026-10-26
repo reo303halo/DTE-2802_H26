@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CupcakeMVC.Migrations
 {
     [DbContext(typeof(CupcakeDbContext))]
-    [Migration("20261022063540_Init")]
+    [Migration("20261020123133_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -33,6 +33,23 @@ namespace CupcakeMVC.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Regular"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Vegan"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Gluten Free"
+                        });
                 });
 
             modelBuilder.Entity("CupcakeMVC.Models.Entities.Cupcake", b =>
@@ -69,6 +86,44 @@ namespace CupcakeMVC.Migrations
                     b.HasIndex("SizeId");
 
                     b.ToTable("Cupcakes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            Description = "Stuffed with fresh strawberries and topped with fluffy whipped cream, these strawberry shortcake cupcakes are simply divine. Plus, the vanilla cupcake batter couldn’t be easier to whip up.",
+                            Name = "Strawberry Shortcake",
+                            OwnerId = "default-id",
+                            SizeId = 3
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            Description = "Filled with lemon curd and topped with lemon buttercream frosting, these cupcakes are sweet, tangy, and jam-packed with flavor. They taste like lemon drop candies in cupcake form.",
+                            Name = "Lemon Cupcakes",
+                            OwnerId = "default-id",
+                            SizeId = 3
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 1,
+                            Description = "These cupcakes are the ultimate chocolate and peanut butter dessert. A dollop of peanut butter frosting tops moist chocolate cupcakes with chocolate drizzle and mini peanut butter cups.These cupcakes are the ultimate chocolate and peanut butter dessert. A dollop of peanut butter frosting tops moist chocolate cupcakes with chocolate drizzle and mini peanut butter cups.",
+                            Name = "Chocolate Cupcakes with Peanut Butter Frosting",
+                            OwnerId = "default-id",
+                            SizeId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 2,
+                            Description = "Have a penchant for coconut? These cupcakes are made with a soft, fluffy vanilla cake topped with a coconut cream cheese buttercream frosting. Toasted coconut sprinkled on top makes the entire cupcake tastier.",
+                            Name = "Coconut Cupcakes",
+                            OwnerId = "default-id",
+                            SizeId = 2
+                        });
                 });
 
             modelBuilder.Entity("CupcakeMVC.Models.Entities.Size", b =>
@@ -84,6 +139,33 @@ namespace CupcakeMVC.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sizes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Bite Size"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Small"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Medium"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Large"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Almost Cake Size"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -197,6 +279,24 @@ namespace CupcakeMVC.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "default-id",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "22106a16-b48b-42ce-8fc2-37023e7df010",
+                            Email = "default@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "DEFAULT@EXAMPLE.COM",
+                            NormalizedUserName = "DEFAULT@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKzm1cc3PNxoSLkmzxGeSWDSvOGYgjLKA21LASj6/vRvxWTidxheFqsuJsyH7z2WWg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "default@example.com"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>

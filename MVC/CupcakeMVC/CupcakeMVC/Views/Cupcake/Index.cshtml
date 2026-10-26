@@ -6,27 +6,49 @@
 
 <h1 class="display-4">Cupcake</h1>
 <div class="container">
+    @if (TempData["Message"] is string message)
+    {
+        <div id="tempMessage" class="alert alert-info alert-dismissible fade show" role="alert">
+            @message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <div class="row">
         @foreach (var cupcake in Model)
         {
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="images/cupcake_placeholder.jpeg" class="card-img-top" alt="Cupcake Image">
+                    <img src="~/images/cupcake_placeholder.jpeg" class="card-img-top" alt="Cupcake Image">
                     <div class="card-body">
                         <h5 class="card-title">@cupcake.Name</h5>
                         <p class="card-text">Category: @cupcake.Category?.Name</p>
                         <p class="card-text overflow-text">@cupcake.Description</p>
                         <p class="card-text">Size: @cupcake.Size?.Name</p>
-                        <p class="card-text">Owner: @cupcake.Owner?.Email</p>
+                        <p class="card-text">Owner: @cupcake.Owner.Email</p>
+
+                        @if (cupcake.Owner.UserName == User.Identity?.Name)
+                        {
+                            <a asp-action="Edit" asp-route-id="@cupcake.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@cupcake.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                        }
                     </div>
                 </div>
             </div>
         }
     </div>
-    @{
-        if (User.Identity is { IsAuthenticated: true })
-        {
-            <a href="@Url.Action("Create", "Cupcake")" class="btn btn-primary">Create</a>
-        }
+
+    @if (User.Identity is { IsAuthenticated: true })
+    {
+        <a asp-action="Create" class="btn btn-primary">Create</a>
     }
 </div>
+
+@section Scripts {
+    <script>
+        const alertEl = document.getElementById("tempMessage");
+        if (alertEl) {
+            setTimeout(() => bootstrap.Alert.getOrCreateInstance(alertEl).close(), 5000);
+        }
+    </script>
+}

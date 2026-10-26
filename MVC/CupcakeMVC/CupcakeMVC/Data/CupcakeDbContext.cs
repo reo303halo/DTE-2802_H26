@@ -5,7 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CupcakeMVC.Data;
 
-public class CupcakeDbContext(DbContextOptions<CupcakeDbContext> options) : IdentityDbContext<IdentityUser>(options)
+// dotnet ef migrations add <name of migration>
+// dotnet ef database update
+
+public class CupcakeDbContext(DbContextOptions<CupcakeDbContext> options)
+    : IdentityDbContext<IdentityUser>(options)
 {
     // Users are already defined by IdentityDbContext
     public DbSet<Size> Sizes => Set<Size>();

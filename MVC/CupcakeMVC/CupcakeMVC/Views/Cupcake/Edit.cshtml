@@ -1,0 +1,22 @@
+@model CupcakeMVC.Models.ViewModels.CupcakeEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Cupcake";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            <h1>Edit</h1>
+            <hr/>
+            <input type="hidden" asp-for="Id"/>
+            <partial name="_CupcakeForm"/>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

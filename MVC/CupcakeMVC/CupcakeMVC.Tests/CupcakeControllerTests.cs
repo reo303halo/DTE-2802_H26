@@ -14,15 +14,15 @@ namespace CupcakeMVC.Tests;
 
 public class CupcakeControllerTests
 {
-    private readonly Mock<ICupcakeRepository> _repository = new ();
+    private readonly Mock<ICupcakeRepository> _repository = new();
     private readonly ClaimsPrincipal _user;
     private readonly CupcakeController _controller;
 
     public CupcakeControllerTests()
     {
         _user = new ClaimsPrincipal(new ClaimsIdentity(
-        [new Claim(ClaimTypes.Name, "test@uit.no")], authenticationType: "TestAuth"));
-        
+            [new Claim(ClaimTypes.Name, "test@uit.no")], authenticationType: "TestAuth"));
+
         var httpContext = new DefaultHttpContext { User = _user };
 
         _controller = new CupcakeController(_repository.Object)
@@ -32,6 +32,7 @@ public class CupcakeControllerTests
         };
     }
     
+
     [Fact]
     public void Index_ReturnsViewWithAllCupcakes()
     {
@@ -42,18 +43,18 @@ public class CupcakeControllerTests
             new() { Id = 2, Name = "Chocolate", Description = "Rich", SizeId = 2, CategoryId = 1 }
         };
         _repository.Setup(r => r.GetAll()).Returns(cupcakes);
-        
+
         // Act
         var result = _controller.Index();
-        
+
         // Assert
         var viewResult = Assert.IsType<ViewResult>(result);
-        var model = Assert.IsAssignableFrom<List<Cupcake>>(viewResult.ViewData.Model);
-        Assert.Equal(2, model.Count);
+        var model = Assert.IsAssignableFrom<IEnumerable<Cupcake>>(viewResult.Model);
+        Assert.Equal(2, model.Count());
         _repository.Verify(r => r.GetAll(), Times.Once);
     }
     
-    
+
     [Fact]
     public void Create_Get_ReturnsViewWithEditViewModel()
     {
@@ -159,5 +160,4 @@ public class CupcakeControllerTests
         Assert.NotNull(method.GetCustomAttribute<AuthorizeAttribute>());
         Assert.NotNull(method.GetCustomAttribute<HttpPostAttribute>());
     }
-    
 }

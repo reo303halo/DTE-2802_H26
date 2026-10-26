@@ -1,0 +1,29 @@
+@model CupcakeMVC.Models.Entities.Cupcake
+
+@{
+    ViewData["Title"] = "Delete Cupcake";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h1>Delete</h1>
+        <hr/>
+        <p class="text-danger">Are you sure you want to delete this cupcake?</p>
+
+        <div class="card mb-3">
+            <img src="~/images/cupcake_placeholder.jpeg" class="card-img-top" alt="Cupcake Image">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Name</h5>
+                <p class="card-text">Category: @Model.Category?.Name</p>
+                <p class="card-text">@Model.Description</p>
+                <p class="card-text">Size: @Model.Size?.Name</p>
+            </div>
+        </div>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id"/>
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
