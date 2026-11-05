@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Map";
+}
+
+<div id="map-error" class="alert alert-danger d-none" role="alert"></div>
+
+<div id="map"
+     data-markers-url="@Url.Action("Markers")"
+     data-edit-url="@Url.Action("Edit")"
+     data-delete-url="@Url.Action("Delete")"></div>
+
+@section Scripts {
+    <script src="~/js/poi-map.js" asp-append-version="true"></script>
+}

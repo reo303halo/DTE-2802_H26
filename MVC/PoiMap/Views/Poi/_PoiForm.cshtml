@@ -1,0 +1,43 @@
+@model PoiFormViewModel
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Category" class="form-label"></label>
+            <select asp-for="Category" asp-items="Html.GetEnumSelectList<PoiCategory>()" class="form-select"></select>
+            <span asp-validation-for="Category" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col mb-3">
+                <label asp-for="Latitude" class="form-label"></label>
+                <input asp-for="Latitude" class="form-control" inputmode="decimal" autocomplete="off" />
+                <span asp-validation-for="Latitude" class="text-danger"></span>
+            </div>
+            <div class="col mb-3">
+                <label asp-for="Longitude" class="form-label"></label>
+                <input asp-for="Longitude" class="form-control" inputmode="decimal" autocomplete="off" />
+                <span asp-validation-for="Longitude" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div id="picker-map"></div>
+        <div class="form-text">Click the map to set the position.</div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+@model List<PoiViewModel>
+@{
+    ViewData["Title"] = "Points of interest";
+}
+
+<h1 class="h3">Points of interest</h1>
+
+@if (Model.Count == 0)
+{
+    <p>There are no POIs yet.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var poi in Model)
+                {
+                    <tr>
+                        <td>@poi.Name</td>
+                        <td>@poi.Category</td>
+                        <td>@poi.Description</td>
+                        <td>@poi.Latitude.ToString("F4")</td>
+                        <td>@poi.Longitude.ToString("F4")</td>
+                        <td class="text-end text-nowrap">
+                            <a class="btn btn-outline-primary btn-sm" asp-action="Edit" asp-route-id="@poi.Id">Edit</a>
+                            <a class="btn btn-outline-danger btn-sm" asp-action="Delete" asp-route-id="@poi.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

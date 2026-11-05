@@ -1,0 +1,19 @@
+@model PoiFormViewModel
+@{
+    ViewData["Title"] = "Edit POI";
+}
+
+<h1 class="h3 mb-3">Edit POI</h1>
+
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="Id" />
+    <partial name="_PoiForm" model="Model" />
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/poi-picker.js" asp-append-version="true"></script>
+}
