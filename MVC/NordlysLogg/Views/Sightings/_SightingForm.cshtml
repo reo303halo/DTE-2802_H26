@@ -1,0 +1,57 @@
+@model SightingFormViewModel
+@* Felles skjema for Create og Edit. asp-for kobler felt ↔ ViewModel-egenskap og gir validering. *@
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+<input type="hidden" asp-for="Id" />
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <label asp-for="ObservedAt" class="form-label"></label>
+        <input asp-for="ObservedAt" class="form-control" />
+        <span asp-validation-for="ObservedAt" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="SiteId" class="form-label"></label>
+        <select asp-for="SiteId" asp-items="Model.Sites" class="form-select">
+            <option value="0">— Velg sted —</option>
+        </select>
+        <span asp-validation-for="SiteId" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="ObserverId" class="form-label"></label>
+        <select asp-for="ObserverId" asp-items="Model.Observers" class="form-select">
+            <option value="0">— Velg observatør —</option>
+        </select>
+        <span asp-validation-for="ObserverId" class="text-danger small"></span>
+    </div>
+    <div class="col-md-6">
+        <label asp-for="KpIndex" class="form-label"></label>
+        <div class="d-flex align-items-center gap-3">
+            <input asp-for="KpIndex" type="range" min="0" max="9" step="1" class="form-range"
+                   oninput="document.getElementById('kpValue').textContent = this.value" />
+            <span id="kpValue" class="kp-pill">@Model.KpIndex</span>
+        </div>
+        <span asp-validation-for="KpIndex" class="text-danger small"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Intensity" class="form-label"></label>
+        <select asp-for="Intensity" asp-items="Html.GetEnumSelectList<AuroraIntensity>()" class="form-select"></select>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="DominantColor" class="form-label"></label>
+        <select asp-for="DominantColor" asp-items="Html.GetEnumSelectList<AuroraColor>()" class="form-select"></select>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="CloudCoverPercent" class="form-label"></label>
+        <input asp-for="CloudCoverPercent" type="number" min="0" max="100" step="5" class="form-control" />
+        <span asp-validation-for="CloudCoverPercent" class="text-danger small"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Notes" class="form-label"></label>
+        <textarea asp-for="Notes" rows="3" class="form-control" placeholder="Hvordan var det? Bevegelse, lyd av stillhet, frosne fingre…"></textarea>
+        <span asp-validation-for="Notes" class="text-danger small"></span>
+    </div>
+</div>

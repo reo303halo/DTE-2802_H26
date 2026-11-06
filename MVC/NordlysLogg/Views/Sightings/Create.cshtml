@@ -1,0 +1,22 @@
+@model SightingFormViewModel
+@{
+    ViewData["Title"] = "Logg nordlys";
+}
+
+<h1 class="mb-4">Logg nordlys ✦</h1>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <partial name="_SightingForm" model="Model" />
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-aurora">Lagre observasjon</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Avbryt</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

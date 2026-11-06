@@ -1,0 +1,58 @@
+@model AuroraSighting
+@{
+    ViewData["Title"] = "Observasjon";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">@Model.Site?.Name</h1>
+    <partial name="_WowBadge" model="Model.WowScore" />
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Tidspunkt</dt>
+                    <dd class="col-sm-8">@Model.ObservedAt.ToString("dd.MM.yyyy 'kl.' HH:mm")</dd>
+
+                    <dt class="col-sm-4">Observatør</dt>
+                    <dd class="col-sm-8">@Model.Observer?.Name <span class="text-secondary">@Model.Observer?.Nickname</span></dd>
+
+                    <dt class="col-sm-4">Kp-indeks</dt>
+                    <dd class="col-sm-8"><span class="kp-pill kp-@Model.KpIndex">@Model.KpIndex</span></dd>
+
+                    <dt class="col-sm-4">Intensitet</dt>
+                    <dd class="col-sm-8">@Model.Intensity.GetDisplayName()</dd>
+
+                    <dt class="col-sm-4">Farge</dt>
+                    <dd class="col-sm-8"><span class="color-dot aurora-@Model.DominantColor.ToString().ToLower() me-1"></span>@Model.DominantColor.GetDisplayName()</dd>
+
+                    <dt class="col-sm-4">Skydekke</dt>
+                    <dd class="col-sm-8">
+                        <div class="progress cloud-bar" role="progressbar" aria-valuenow="@Model.CloudCoverPercent" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-secondary" style="width: @(Model.CloudCoverPercent)%">@Model.CloudCoverPercent %</div>
+                        </div>
+                    </dd>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Notes))
+                    {
+                        <dt class="col-sm-4">Notater</dt>
+                        <dd class="col-sm-8 fst-italic">«@Model.Notes»</dd>
+                    }
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="sky-preview aurora-preview-@Model.DominantColor.ToString().ToLower() intensity-@((int)Model.Intensity)">
+            <span>Slik omtrent?</span>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 d-flex gap-2">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-aurora">Rediger</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Slett</a>
+    <a asp-action="Index" class="btn btn-outline-secondary ms-auto">← Tilbake til listen</a>
+</div>

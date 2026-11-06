@@ -1,0 +1,35 @@
+@model List<SiteListItemViewModel>
+@{
+    ViewData["Title"] = "Steder";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Observasjonssteder</h1>
+    <a class="btn btn-aurora" asp-action="Create">+ Nytt sted</a>
+</div>
+
+<div class="row g-3">
+    @foreach (var site in Model)
+    {
+        <div class="col-md-6 col-lg-4">
+            <a asp-action="Details" asp-route-id="@site.Id" class="card site-card h-100 text-decoration-none">
+                <div class="card-body">
+                    <h5 class="card-title mb-1">@site.Name</h5>
+                    <div class="small text-secondary mb-3">@site.Region</div>
+                    <div class="d-flex justify-content-between small">
+                        <span title="Mørkhet">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                <span class="@(i <= site.DarknessRating ? "star-on" : "star-off")">★</span>
+                            }
+                        </span>
+                        <span>@site.SightingCount observasjon(er)</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent small text-secondary">
+                    Sist sett: @(site.LastSighting?.ToString("dd.MM.yyyy") ?? "aldri")
+                </div>
+            </a>
+        </div>
+    }
+</div>

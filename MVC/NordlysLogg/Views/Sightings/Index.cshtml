@@ -1,0 +1,83 @@
+@model SightingIndexViewModel
+@{
+    ViewData["Title"] = "Observasjoner";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Observasjoner</h1>
+    <a class="btn btn-aurora" asp-action="Create">+ Ny observasjon</a>
+</div>
+
+@* GET-skjema: filterverdiene havner i URL-en og kan deles/bokmerkes *@
+<form method="get" asp-action="Index" class="row g-2 align-items-end mb-4 filter-bar">
+    <div class="col-md-4">
+        <label asp-for="SiteId" class="form-label small">Sted</label>
+        <select asp-for="SiteId" asp-items="Model.Sites" class="form-select">
+            <option value="">Alle steder</option>
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="MinKp" class="form-label small">Minimum Kp</label>
+        <input asp-for="MinKp" type="number" min="0" max="9" class="form-control" placeholder="0–9" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="Sort" class="form-label small">Sortering</label>
+        <select asp-for="Sort" asp-items="Model.SortOptions" class="form-select"></select>
+    </div>
+    <div class="col-md-2 d-flex gap-2">
+        <button type="submit" class="btn btn-outline-light flex-grow-1">Filtrer</button>
+        @if (Model.IsFiltered)
+        {
+            <a asp-action="Index" class="btn btn-outline-secondary" title="Nullstill">✕</a>
+        }
+    </div>
+</form>
+
+@if (Model.Sightings.Count == 0)
+{
+    <div class="text-center text-secondary py-5">
+        <p class="fs-4">Ingen nordlys her… ennå.</p>
+        <p>Prøv et annet filter, eller <a asp-action="Create">logg en ny observasjon</a>.</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Tidspunkt</th>
+                    <th>Sted</th>
+                    <th class="text-center">Kp</th>
+                    <th>Intensitet</th>
+                    <th>Farge</th>
+                    <th class="text-center">Skyer</th>
+                    <th class="text-center">Wow</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in Model.Sightings)
+                {
+                    <tr>
+                        <td>@s.ObservedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>
+                            <a asp-controller="Sites" asp-action="Details" asp-route-id="@s.SiteId">@s.Site?.Name</a>
+                            <div class="small text-secondary">@s.Observer?.Name</div>
+                        </td>
+                        <td class="text-center"><span class="kp-pill kp-@s.KpIndex">@s.KpIndex</span></td>
+                        <td>@s.Intensity.GetDisplayName()</td>
+                        <td><span class="color-dot aurora-@s.DominantColor.ToString().ToLower() me-1"></span>@s.DominantColor.GetDisplayName()</td>
+                        <td class="text-center">@s.CloudCoverPercent %</td>
+                        <td class="text-center"><partial name="_WowBadge" model="s.WowScore" /></td>
+                        <td class="text-end text-nowrap">
+                            <a asp-action="Details" asp-route-id="@s.Id" class="btn btn-sm btn-outline-light">Vis</a>
+                            <a asp-action="Edit" asp-route-id="@s.Id" class="btn btn-sm btn-outline-secondary">Rediger</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <p class="small text-secondary">@Model.Sightings.Count observasjon(er) vist.</p>
+}

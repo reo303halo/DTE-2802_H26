@@ -1,0 +1,23 @@
+@model SightingFormViewModel
+@{
+    ViewData["Title"] = "Rediger observasjon";
+}
+
+<h1 class="mb-4">Rediger observasjon</h1>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+            <partial name="_SightingForm" model="Model" />
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-aurora">Lagre endringer</button>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Avbryt</a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger ms-auto">Slett</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,63 @@
+@model SiteDetailsViewModel
+@{
+    ViewData["Title"] = Model.Site.Name;
+}
+
+<div class="d-flex justify-content-between align-items-start mb-2">
+    <div>
+        <h1 class="mb-0">@Model.Site.Name</h1>
+        <div class="text-secondary">@Model.Site.Region ·
+            <a href="@Model.MapUrl" target="_blank" rel="noopener">
+                @Model.Site.Latitude.ToString("0.000")°N, @Model.Site.Longitude.ToString("0.000")°Ø
+            </a>
+        </div>
+    </div>
+    <a class="btn btn-aurora" asp-controller="Sightings" asp-action="Create" asp-route-siteId="@Model.Site.Id">+ Logg her</a>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(Model.Site.Description))
+{
+    <p class="lead mt-3">@Model.Site.Description</p>
+}
+
+<div class="row g-3 my-4 text-center">
+    <div class="col-md-4"><div class="stat-tile"><div class="stat-value">@Model.SightingCount</div><div class="stat-label">observasjoner</div></div></div>
+    <div class="col-md-4"><div class="stat-tile"><div class="stat-value">@Model.AverageKp.ToString("0.0")</div><div class="stat-label">snitt Kp</div></div></div>
+    <div class="col-md-4"><div class="stat-tile"><div class="stat-value">@(Model.BestSighting?.WowScore.ToString() ?? "–")</div><div class="stat-label">beste Wow-score</div></div></div>
+</div>
+
+@if (Model.ColorDistribution.Count > 0)
+{
+    <h2 class="h5 mb-3">Fargefordeling</h2>
+    <div class="mb-5">
+        @foreach (var c in Model.ColorDistribution)
+        {
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="color-label">@c.Color.GetDisplayName()</span>
+                <div class="flex-grow-1 color-track">
+                    <div class="color-fill aurora-@c.Color.ToString().ToLower()" style="width: @(c.Percent)%"></div>
+                </div>
+                <span class="small text-secondary">@c.Count</span>
+            </div>
+        }
+    </div>
+}
+
+<h2 class="h5 mb-3">Alle observasjoner her</h2>
+@if (Model.Sightings.Count == 0)
+{
+    <p class="text-secondary">Ingen ennå. Bli den første!</p>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var s in Model.Sightings)
+        {
+            <div class="col-sm-6 col-lg-4">
+                <partial name="_SightingCard" model="s" />
+            </div>
+        }
+    </div>
+}
+
+<a asp-action="Index" class="btn btn-outline-secondary mt-4">← Alle steder</a>

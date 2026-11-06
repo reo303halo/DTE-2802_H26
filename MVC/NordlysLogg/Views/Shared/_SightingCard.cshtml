@@ -1,0 +1,22 @@
+@model AuroraSighting
+@* Gjenbrukbar partial view – brukes på forsiden og stedssiden *@
+<div class="card sighting-card h-100">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <span class="color-dot aurora-@Model.DominantColor.ToString().ToLower()" title="@Model.DominantColor.GetDisplayName()"></span>
+            <partial name="_WowBadge" model="Model.WowScore" />
+        </div>
+        <h6 class="card-title mb-1">@Model.Site?.Name</h6>
+        <div class="small text-secondary mb-2">
+            @Model.ObservedAt.ToString("dd.MM.yyyy HH:mm") · Kp @Model.KpIndex · @Model.Intensity.GetDisplayName()
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.Notes))
+        {
+            <p class="card-text small fst-italic">«@Model.Notes»</p>
+        }
+    </div>
+    <div class="card-footer bg-transparent border-0 d-flex justify-content-between small">
+        <span class="text-secondary">@Model.Observer?.Name</span>
+        <a asp-controller="Sightings" asp-action="Details" asp-route-id="@Model.Id">Detaljer →</a>
+    </div>
+</div>

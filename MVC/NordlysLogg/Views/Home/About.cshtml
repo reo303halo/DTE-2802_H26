@@ -1,0 +1,34 @@
+@{
+    ViewData["Title"] = "Om prosjektet";
+}
+<h1 class="mb-4">Om NordlysLogg</h1>
+
+<p class="lead">Et eksempelprosjekt i ASP.NET Core MVC (.NET 10) med Entity Framework Core og repository-mønsteret.</p>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h2 class="h5">Arkitektur – flyten i en forespørsel</h2>
+        <pre class="architecture mb-0">
+Nettleser
+   │  HTTP GET /Sightings?minKp=5
+   ▼
+Controller (SightingsController)       ← tar imot, validerer, velger view
+   │  bruker ISightingRepository (DI)
+   ▼
+Repository (SightingRepository)        ← all LINQ/EF-kode samlet her
+   │  bruker NordlysContext
+   ▼
+EF Core → SQLite (nordlys.db)
+   ▲
+   │  entiteter (Models) tilbake
+Controller bygger ViewModel
+   ▼
+View (.cshtml) rendrer HTML</pre>
+    </div>
+</div>
+
+<h2 class="h5">Hva er Wow-score?</h2>
+<p>
+    En beregnet verdi (0–100) basert på Kp-indeks, intensitet og skydekke. Den er markert med
+    <code>[NotMapped]</code> og lagres ikke i databasen.
+</p>

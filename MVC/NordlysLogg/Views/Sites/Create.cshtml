@@ -1,0 +1,54 @@
+@model ObservationSite
+@{
+    ViewData["Title"] = "Nytt sted";
+}
+
+<h1 class="mb-4">Nytt observasjonssted</h1>
+
+<div class="card form-card">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" placeholder="f.eks. Bjørnfjell" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Region" class="form-label"></label>
+                    <input asp-for="Region" class="form-control" placeholder="f.eks. Nordland" />
+                    <span asp-validation-for="Region" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Latitude" class="form-label"></label>
+                    <input asp-for="Latitude" type="number" step="0.0001" class="form-control" />
+                    <span asp-validation-for="Latitude" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Longitude" class="form-label"></label>
+                    <input asp-for="Longitude" type="number" step="0.0001" class="form-control" />
+                    <span asp-validation-for="Longitude" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="DarknessRating" class="form-label"></label>
+                    <input asp-for="DarknessRating" type="number" min="1" max="5" class="form-control" />
+                    <span asp-validation-for="DarknessRating" class="text-danger small"></span>
+                </div>
+                <div class="col-12">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" rows="3" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-aurora">Lagre sted</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Avbryt</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

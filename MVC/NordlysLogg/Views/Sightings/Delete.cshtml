@@ -1,0 +1,23 @@
+@model AuroraSighting
+@{
+    ViewData["Title"] = "Slett observasjon";
+}
+
+<h1 class="text-danger mb-3">Slette observasjonen?</h1>
+<p>Nordlyset kommer ikke tilbake hvis du sletter denne. Er du sikker?</p>
+
+<div class="card mb-4" style="max-width: 32rem">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Site?.Name</h5>
+        <p class="card-text mb-0">
+            @Model.ObservedAt.ToString("dd.MM.yyyy HH:mm") · Kp @Model.KpIndex ·
+            @Model.Intensity.GetDisplayName() · Wow @Model.WowScore
+        </p>
+        <p class="card-text small text-secondary">Observert av @Model.Observer?.Name</p>
+    </div>
+</div>
+
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-flex gap-2">
+    <button type="submit" class="btn btn-danger">Ja, slett</button>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-secondary">Nei, behold</a>
+</form>

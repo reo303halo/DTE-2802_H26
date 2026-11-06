@@ -1,0 +1,10 @@
+@model int
+@{
+    var css = Model switch
+    {
+        >= 75 => "wow-epic",
+        >= 50 => "wow-good",
+        _ => "wow-meh"
+    };
+}
+<span class="badge wow-badge @css" title="Wow-score (0–100)">@Model</span>

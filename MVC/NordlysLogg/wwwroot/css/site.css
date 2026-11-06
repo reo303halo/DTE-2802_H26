@@ -1,0 +1,139 @@
+/* ===== NordlysLogg – mørkt tema med animert nordlys ===== */
+
+:root {
+    --sky: #070b18;
+    --panel: rgba(18, 26, 48, .78);
+    --green: #3dffa8;
+    --violet: #a46bff;
+    --red: #ff5b6e;
+    --pink: #ff8fd8;
+    --white: #e8f1ff;
+}
+
+body {
+    background: radial-gradient(ellipse at bottom, #0f1b33 0%, var(--sky) 70%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+main { flex: 1; position: relative; z-index: 1; }
+header, footer { position: relative; z-index: 1; }
+
+/* --- Animert himmel i bakgrunnen --- */
+.aurora-sky {
+    position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; opacity: .35;
+}
+.aurora-sky span {
+    position: absolute; top: -30%; left: -20%; width: 140%; height: 60%;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    filter: blur(70px); border-radius: 50%;
+    animation: drift 18s ease-in-out infinite alternate;
+}
+.aurora-sky span:nth-child(2) {
+    background: linear-gradient(90deg, transparent, var(--violet), transparent);
+    animation-duration: 24s; top: -20%; opacity: .7;
+}
+.aurora-sky span:nth-child(3) {
+    background: linear-gradient(90deg, transparent, var(--pink), transparent);
+    animation-duration: 31s; top: -10%; opacity: .4;
+}
+@keyframes drift {
+    from { transform: translateX(-10%) rotate(-6deg) scaleY(.8); }
+    to   { transform: translateX(10%) rotate(5deg) scaleY(1.2); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .aurora-sky span { animation: none; }
+}
+
+/* --- Merkevare og knapper --- */
+.brand-glow {
+    background: linear-gradient(90deg, var(--green), var(--violet));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.btn-aurora {
+    background: linear-gradient(90deg, #22c98a, #7d4dff);
+    border: 0; color: #fff; font-weight: 600;
+}
+.btn-aurora:hover { filter: brightness(1.15); color: #fff; }
+
+/* --- Kort og fliser --- */
+.card, .stat-tile, .filter-bar {
+    background: var(--panel);
+    border: 1px solid rgba(255, 255, 255, .08);
+    backdrop-filter: blur(6px);
+}
+.filter-bar { padding: 1rem; border-radius: .75rem; }
+.stat-tile { border-radius: .75rem; padding: 1.25rem; }
+.stat-value { font-size: 2.4rem; font-weight: 700; color: var(--green); }
+.stat-label { color: var(--bs-secondary-color); text-transform: uppercase; letter-spacing: .08em; font-size: .8rem; }
+
+.sighting-card, .site-card { transition: transform .15s, border-color .15s; }
+.sighting-card:hover, .site-card:hover { transform: translateY(-3px); border-color: var(--green); }
+.site-card { color: inherit; }
+
+.champion-card { border-color: rgba(61, 255, 168, .4); }
+.champion-score {
+    font-size: 3.5rem; font-weight: 800; width: 6rem; text-align: center;
+    color: var(--green); text-shadow: 0 0 18px var(--green);
+}
+
+.table { --bs-table-bg: transparent; }
+
+/* --- Fargeprikker og -stolper --- */
+.color-dot { display: inline-block; width: .85rem; height: .85rem; border-radius: 50%; box-shadow: 0 0 8px currentColor; }
+.aurora-green  { background: var(--green);  color: var(--green); }
+.aurora-violet { background: var(--violet); color: var(--violet); }
+.aurora-red    { background: var(--red);    color: var(--red); }
+.aurora-pink   { background: var(--pink);   color: var(--pink); }
+.aurora-white  { background: var(--white);  color: var(--white); }
+
+.color-label { width: 6rem; }
+.color-track { height: .7rem; background: rgba(255,255,255,.06); border-radius: 1rem; overflow: hidden; }
+.color-fill  { height: 100%; border-radius: 1rem; box-shadow: none; }
+
+.star-on  { color: #ffd76a; }
+.star-off { color: rgba(255,255,255,.2); }
+
+/* --- Kp-indeks: farge etter styrke --- */
+.kp-pill {
+    display: inline-block; min-width: 2rem; text-align: center; padding: .1rem .5rem;
+    border-radius: 1rem; font-weight: 700; background: #2a3550;
+}
+.kp-0, .kp-1, .kp-2 { background: #2a3550; }
+.kp-3, .kp-4 { background: #1f7a55; }
+.kp-5, .kp-6 { background: #c58b16; }
+.kp-7, .kp-8, .kp-9 { background: #c23a52; }
+
+/* --- Wow-score --- */
+.wow-badge { font-size: .9rem; }
+.wow-epic { background: linear-gradient(90deg, var(--green), var(--violet)); color: #071018; }
+.wow-good { background: #1f7a55; }
+.wow-meh  { background: #3a4460; }
+
+/* --- Skydekke --- */
+.cloud-bar { height: 1.2rem; background: rgba(255,255,255,.06); }
+
+/* --- "Slik omtrent?"-forhåndsvisning på detaljsiden --- */
+.sky-preview {
+    height: 100%; min-height: 14rem; border-radius: .75rem; position: relative; overflow: hidden;
+    background: linear-gradient(to top, #04060d 0%, #0a1430 100%);
+    border: 1px solid rgba(255,255,255,.08);
+}
+.sky-preview::before {
+    content: ""; position: absolute; left: -10%; right: -10%; top: 10%; height: 55%;
+    background: linear-gradient(90deg, transparent, var(--aurora), transparent);
+    filter: blur(28px); border-radius: 50%;
+    animation: drift 9s ease-in-out infinite alternate;
+}
+.sky-preview span { position: absolute; bottom: .75rem; right: 1rem; font-size: .8rem; color: var(--bs-secondary-color); }
+.aurora-preview-green  { --aurora: var(--green); }
+.aurora-preview-violet { --aurora: var(--violet); }
+.aurora-preview-red    { --aurora: var(--red); }
+.aurora-preview-pink   { --aurora: var(--pink); }
+.aurora-preview-white  { --aurora: var(--white); }
+.intensity-1::before { opacity: .25; }
+.intensity-2::before { opacity: .5; }
+.intensity-3::before { opacity: .8; }
+.intensity-4::before { opacity: 1; height: 85%; top: 0; }
+
+pre.architecture { color: var(--green); background: transparent; font-size: .85rem; }
